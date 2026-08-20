@@ -1,0 +1,29 @@
+import * as path from 'path';
+import Mocha from 'mocha';
+import { glob } from 'glob';
+
+/**
+ * Integration test suite runner for @vscode/test-electron.
+ */
+export async function run(): Promise<void> {
+  const mocha = new Mocha({
+    ui: 'bdd',
+    timeout: 30_000,
+    color: true,
+  });
+
+  const testsRoot = path.resolve(__dirname, '.');
+  const files = await glob('**/*.test.js', { cwd: testsRoot });
+
+  files.forEach((f) => mocha.addFile(path.resolve(testsRoot, f)));
+
+  return new Promise((resolve, reject) => {
+    mocha.run((failures) => {
+      if (failures > 0) {
+        reject(new Error(`${failures} test(s) failed.`));
+      } else {
+        resolve();
+      }
+    });
+  });
+}

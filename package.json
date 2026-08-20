@@ -1,0 +1,125 @@
+{
+  "name": "minifyr",
+  "displayName": "Minifyr",
+  "description": "Zero-config minification triggered by renaming files to *.min.<ext>. Supports JS, JSX, MJS, CJS, and CSS.",
+  "version": "0.1.0",
+  "publisher": "minifyr",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rudhrabharathy/minifyr"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Formatters"
+  ],
+  "keywords": [
+    "minify",
+    "minifier",
+    "css",
+    "javascript",
+    "esbuild",
+    "lightningcss"
+  ],
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1e1e2e",
+    "theme": "dark"
+  },
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Minifyr",
+      "properties": {
+        "minifyr.enabledLanguages": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "js",
+            "jsx",
+            "mjs",
+            "cjs",
+            "css"
+          ],
+          "description": "File extensions that trigger the minification dialog when renamed to *.min.<ext>."
+        },
+        "minifyr.alwaysGenerateSourceMaps": {
+          "type": "boolean",
+          "default": true,
+          "description": "Emit a .map file alongside the minified output."
+        },
+        "minifyr.autoUpdateReferences": {
+          "type": "boolean",
+          "default": false,
+          "description": "After a successful minify, offer to rewrite import/require/src references to the old filename."
+        },
+        "minifyr.sizeWarningThresholdKb": {
+          "type": "number",
+          "default": 500,
+          "description": "Files larger than this (KB) require an extra confirmation before minification."
+        },
+        "minifyr.ignoreGlobs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "**/node_modules/**",
+            "**/dist/**"
+          ],
+          "description": "Glob patterns for paths never watched by the extension."
+        },
+        "minifyr.esbuildTarget": {
+          "type": "string",
+          "default": "es2019",
+          "description": "esbuild compile target for JS/JSX minification (e.g. 'es2015', 'es2019', 'esnext')."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "minifyr.showOutputChannel",
+        "title": "Minifyr: Show Output Channel"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --external:esbuild-wasm --external:lightningcss-wasm --platform=node --format=cjs --sourcemap",
+    "watch": "npm run build -- --watch",
+    "lint": "eslint src --ext .ts --max-warnings 0",
+    "typecheck": "tsc --noEmit",
+    "pretest": "npm run build",
+    "test:unit": "TS_NODE_PROJECT=tsconfig.test.json mocha --require ts-node/register --require tsconfig-paths/register \"test/unit/**/*.test.ts\"",
+    "test:integration": "node ./test/runTests.js",
+    "test": "npm run test:unit && npm run test:integration"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.6",
+    "@types/node": "^20.11.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^7.0.0",
+    "@typescript-eslint/parser": "^7.0.0",
+    "@vscode/test-electron": "^2.3.8",
+    "@vscode/vsce": "^2.23.0",
+    "esbuild": "^0.20.1",
+    "eslint": "^8.56.0",
+    "mocha": "^10.3.0",
+    "prettier": "^3.2.5",
+    "ts-node": "^10.9.2",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "esbuild-wasm": "^0.20.2",
+    "lightningcss-wasm": "^1.33.0"
+  }
+}
