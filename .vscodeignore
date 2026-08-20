@@ -2,12 +2,13 @@
 .vscode-test/**
 src/**
 test/**
+out/**
 .github/**
 .eslintrc.json
 .prettierrc
 .mocharc.json
-tsconfig.json
-tsconfig.test.json
+tsconfig*.json
+*.vsix
 **/*.ts
 **/*.map
 **/.gitignore
@@ -16,3 +17,4 @@ node_modules/**
 !node_modules/lightningcss-wasm/**
 !node_modules/napi-wasm/**
 !dist/**
+
