@@ -49,9 +49,10 @@ jobs:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
 
       - name: Publish to Open VSX
-        run: npx ovsx publish *.vsix
+        run: npx ovsx publish *.vsix --pat ${{ secrets.OVSX_PAT }}
         env:
           OVSX_PAT: ${{ secrets.OVSX_PAT }}
+        continue-on-error: true
 
       - name: Extract changelog for this version
         id: changelog
