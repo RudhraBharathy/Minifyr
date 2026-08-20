@@ -100,7 +100,7 @@
     "compile-tests": "tsc -p tsconfig.integration.json",
     "pretest": "npm run build && npm run compile-tests",
     "pretest:integration": "npm run compile-tests",
-    "test:unit": "TS_NODE_PROJECT=tsconfig.test.json mocha --require ts-node/register --require tsconfig-paths/register \"test/unit/**/*.test.ts\"",
+    "test:unit": "mocha --require ./test/mocha-setup.js \"test/unit/**/*.test.ts\"",
     "test:integration": "node ./test/runTests.js",
     "test": "npm run test:unit && npm run test:integration"
   },
