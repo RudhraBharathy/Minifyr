@@ -142,11 +142,12 @@ export class RenameInterceptor {
 
   private isIgnored(filePath: string, globs: string[]): boolean {
     // Simple glob matching: check if any glob pattern appears as a substring segment.
-    // For production quality use micromatch/picomatch; this covers the default node_modules/dist case.
+    const target = process.platform === 'win32' ? filePath.toLowerCase() : filePath;
     return globs.some((glob) => {
       // Convert glob to a simple check: strip ** and check path includes the fixed segment.
       const segment = glob.replace(/\*\*/g, '').replace(/\*/g, '').replace(/\//g, path.sep);
-      return filePath.includes(segment);
+      const normSegment = process.platform === 'win32' ? segment.toLowerCase() : segment;
+      return target.includes(normSegment);
     });
   }
 }
