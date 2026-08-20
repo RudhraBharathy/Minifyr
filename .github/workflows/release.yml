@@ -9,6 +9,8 @@ jobs:
   release:
     name: Package & Publish
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout code
@@ -66,3 +68,5 @@ jobs:
           files: '*.vsix'
           body: ${{ steps.changelog.outputs.notes }}
           generate_release_notes: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
